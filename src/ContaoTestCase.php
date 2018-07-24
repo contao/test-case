@@ -98,7 +98,6 @@ abstract class ContaoTestCase extends TestCase
      * A Config adapter with the default Contao configuration will be added
      * automatically if no Config adapter is given.
      *
-     *
      * @return ContaoFrameworkInterface|MockObject
      */
     protected function mockContaoFramework(array $adapters = []): ContaoFrameworkInterface
@@ -127,7 +126,6 @@ abstract class ContaoTestCase extends TestCase
     /**
      * Mocks an adapter with the given methods.
      *
-     *
      * @return Adapter|MockObject
      */
     protected function mockAdapter(array $methods): Adapter
@@ -137,7 +135,6 @@ abstract class ContaoTestCase extends TestCase
 
     /**
      * Mocks a configured adapter with the given methods and return values.
-     *
      *
      * @return Adapter|MockObject
      */
@@ -173,7 +170,6 @@ abstract class ContaoTestCase extends TestCase
 
     /**
      * Mocks a token storage with a Contao user.
-     *
      *
      * @throws \Exception
      */

@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.1",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "contao/core-bundle": "^4.5",

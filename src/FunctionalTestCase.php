@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class FunctionalTestCase extends WebTestCase
 {
-    protected function loadFixture(string $yamlFile, bool $resetDatabase = true)
+    protected function loadFixture(string $yamlFile, bool $resetDatabase = true): void
     {
         self::bootKernel();
 
@@ -38,7 +38,7 @@ abstract class FunctionalTestCase extends WebTestCase
         }
     }
 
-    private function resetDatabase()
+    private function resetDatabase(): void
     {
         $doctrine = self::$container->get('doctrine');
 
@@ -53,11 +53,9 @@ abstract class FunctionalTestCase extends WebTestCase
 
         /** @var EntityManagerInterface $manager */
         $manager = $doctrine->getManager();
-
         $metadata = $manager->getMetadataFactory()->getAllMetadata();
 
         $tool = new SchemaTool($manager);
-
         $tool->createSchema($metadata);
     }
 }

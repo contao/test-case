@@ -36,6 +36,8 @@ abstract class FunctionalTestCase extends WebTestCase
 
     protected static function resetDatabaseSchema(): void
     {
+        self::bootKernel();
+
         $doctrine = self::$container->get('doctrine');
 
         /** @var Connection $connection */

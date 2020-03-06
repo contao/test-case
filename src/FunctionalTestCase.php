@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class FunctionalTestCase extends WebTestCase
 {
-    protected static function loadFixture(array $yamlFiles, bool $truncateTables = true): void
+    protected static function loadFixtures(array $yamlFiles, bool $truncateTables = true): void
     {
         self::bootKernel();
 

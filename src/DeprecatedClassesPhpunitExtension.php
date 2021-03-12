@@ -53,7 +53,7 @@ abstract class DeprecatedClassesPhpunitExtension implements AfterLastTestHook, B
 
     private function expectDeprecatedClass(string $className, array $expectedDeprecations): void
     {
-        // Skip, if the class was already autoloaded
+        // Skip if the class was already autoloaded
         if (class_exists($className, false)) {
             return;
         }

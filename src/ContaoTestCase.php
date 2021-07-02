@@ -76,7 +76,6 @@ abstract class ContaoTestCase extends TestCase
     protected function getContainerWithContaoConfiguration(string $projectDir = ''): ContainerBuilder
     {
         $container = new ContainerBuilder();
-        
         $container->setParameter('kernel.debug', false);
         $container->setParameter('kernel.charset', 'UTF-8');
         $container->setParameter('kernel.default_locale', 'en');

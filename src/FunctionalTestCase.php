@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Contao\TestCase;
 
+use Contao\System;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,7 @@ abstract class FunctionalTestCase extends WebTestCase
             throw new \RuntimeException('Please boot the kernel before calling '.__METHOD__);
         }
 
+        System::setContainer(self::$container);
         $doctrine = self::$container->get('doctrine');
 
         /** @var Connection $connection */
@@ -37,7 +39,7 @@ abstract class FunctionalTestCase extends WebTestCase
 
             /** @var Table $table */
             foreach ($connection->getSchemaManager()->listTables() as $table) {
-                $connection->exec($platform->getTruncateTableSQL($table->getName()));
+                $connection->executeStatement($platform->getTruncateTableSQL($table->getName()));
             }
         }
 
@@ -66,7 +68,7 @@ abstract class FunctionalTestCase extends WebTestCase
 
         /** @var Table $table */
         foreach ($schemaManager->listTables() as $table) {
-            $connection->exec($platform->getDropTableSQL($table));
+            $connection->executeStatement($platform->getDropTableSQL($table));
         }
 
         /** @var EntityManagerInterface $manager */
@@ -84,7 +86,7 @@ abstract class FunctionalTestCase extends WebTestCase
         foreach ($data as $table => $rows) {
             foreach ($rows as $row) {
                 if ('sql' === $table) {
-                    $connection->exec($row);
+                    $connection->executeStatement($row);
                     continue;
                 }
 

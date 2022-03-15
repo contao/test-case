@@ -28,7 +28,6 @@ abstract class FunctionalTestCase extends WebTestCase
             throw new \RuntimeException('Please boot the kernel before calling '.__METHOD__);
         }
 
-        System::setContainer(self::$container);
         $doctrine = self::$container->get('doctrine');
 
         /** @var Connection $connection */

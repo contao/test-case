@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Contao\TestCase;
 
-use Contao\System;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManagerInterface;

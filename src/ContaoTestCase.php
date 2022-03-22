@@ -19,7 +19,6 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\User;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Roave\BetterReflection\BetterReflection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,11 +32,6 @@ abstract class ContaoTestCase extends TestCase
      * @var array
      */
     private static $tempDirs = [];
-
-    /**
-     * @var array
-     */
-    private static $betterReflectionCache = [];
 
     /**
      * @var array
@@ -297,52 +291,19 @@ abstract class ContaoTestCase extends TestCase
                     continue;
                 }
 
-                $property->setAccessible(true);
-
                 if (!$property->isInitialized()) {
                     continue;
                 }
 
-                [$hasDefaultValue, $defaultValue] = $this->getDefaultStaticProperty($property);
+                $defaultValue = $property->getDefaultValue();
 
-                if (!$hasDefaultValue || $property->getValue() === $defaultValue) {
+                if (!$property->hasDefaultValue() || $property->getValue() === $defaultValue) {
                     continue;
                 }
 
                 $property->setValue($defaultValue);
             }
         }
-    }
-
-    private function getDefaultStaticProperty(\ReflectionProperty $property): array
-    {
-        // See https://github.com/php/php-src/commit/3eb97a456648c739533d92c81102cb919eab01c9
-        if (\PHP_VERSION_ID >= 80100) {
-            return [$property->hasDefaultValue(), $property->getDefaultValue()];
-        }
-
-        if (!class_exists(BetterReflection::class)) {
-            throw new \RuntimeException('To use the ContaoTestCase::resetStaticProperties() method on PHP 8.0 or lower please install "roave/better-reflection".');
-        }
-
-        $class = $property->getDeclaringClass()->getName();
-        $name = $property->getName();
-        $cacheKey = $class.'::'.$name;
-
-        if (isset(self::$betterReflectionCache[$cacheKey])) {
-            return self::$betterReflectionCache[$cacheKey];
-        }
-
-        if (method_exists(BetterReflection::class, 'reflector')) {
-            $betterProperty = (new BetterReflection())->reflector()->reflectClass($class)->getProperty($name);
-        } else {
-            $betterProperty = (new BetterReflection())->classReflector()->reflect($class)->getProperty($name);
-        }
-
-        return self::$betterReflectionCache[$cacheKey] = [
-            $betterProperty->isDefault(),
-            $betterProperty->getDefaultValue(),
-        ];
     }
 
     /**
